@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CsvFramework
 {
-    public class CsvModelGenericDictionary
+    internal class CsvModelGenericDictionary
     {
         private Dictionary<string, object> dic = new Dictionary<string, object>();
 

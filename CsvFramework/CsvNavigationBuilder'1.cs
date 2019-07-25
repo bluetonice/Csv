@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace CsvFramework
-{
-    public class CsvNavigationBuilder<T> where T :class
-    {
-    }
-}
+//namespace CsvFramework
+//{
+//    public class CsvNavigationBuilder<T> where T :class
+//    {
+//    }
+//}

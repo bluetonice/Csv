@@ -32,14 +32,14 @@ namespace CvsParser
 
             CsvFactory.Register<Activity>(builder =>
             {
-                builder.Add(a => a.Id).Type(typeof(int)).Index(0);
+                builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true);
                 builder.Add(a => a.OrderId).Type(typeof(int)).Index(1);
                 builder.Add(a => a.TaskType).Type(typeof(string)).Index(2);            
             }, true, ',');
 
             CsvFactory.Register<Particiant>(builder =>
             {
-                builder.Add(a => a.Id).Type(typeof(int)).Index(0);
+                builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true); 
                 builder.Add(a => a.ProjectId).Type(typeof(int)).Index(1);
                 builder.Add(a => a.UserId).Type(typeof(int)).Index(2);
                 builder.Add(a => a.Role).Type(typeof(string)).Index(3);
@@ -49,21 +49,21 @@ namespace CvsParser
 
             CsvFactory.Register<Order>(builder =>
             {
-                builder.Add(a => a.Id).Type(typeof(int)).Index(0);
+                builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true);
                 builder.Add(a => a.ProjectId).Type(typeof(int)).Index(1);
                 builder.Add(a => a.Keyword).Type(typeof(string)).Index(2);
                 builder.Add(a => a.PendingTask).Type(typeof(string)).Index(3);
                 builder.Add(a => a.State).Type(typeof(string)).Index(4);
-                //builder.AddOneToManyNavigation(a => a.Activities).Type(typeof(Activity));
+                //builder.AddNavigation<Activity,int>(a => a.OrderId);
 
             }, true, ',');
 
             CsvFactory.Register<Project>(builder =>
            {
-               builder.Add(a => a.Id).Type(typeof(int)).Index(0);
+               builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true);
                builder.Add(a => a.Name).Type(typeof(string)).Index(1);
-               builder.AddOneToManyNavigation(a => a.Orders).Type(typeof(Order));
-               //builder.AddOneToManyNavigation(a => a.Particiants).Type(typeof(Particiant));
+               builder.AddNavigation<Order,int>(a=>a.ProjectId);
+               //builder.AddNavigation<Particiant,int>(a => a.ProjectId);
 
            }, true, ',');
 

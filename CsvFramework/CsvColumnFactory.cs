@@ -34,9 +34,9 @@ namespace CsvFramework
         }
 
 
-        public CsvColumnFactory Value(object value)
+        public CsvColumnFactory IsKey(bool IsKey)
         {
-            this.column.Value = value;
+            this.column.IsKey = IsKey;
             return this;
         }
 

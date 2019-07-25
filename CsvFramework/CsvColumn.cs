@@ -20,7 +20,7 @@ namespace CsvFramework
 
         public int Index { get; set; }
 
-        public object Value { get; set; }
+        public object IsKey { get; set; }
 
     }
 }

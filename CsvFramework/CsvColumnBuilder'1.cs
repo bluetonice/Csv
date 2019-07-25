@@ -8,44 +8,30 @@ namespace CsvFramework
     {
 
         internal List<CsvColumn> Columns { get; private set; }
+        internal List<CsvNavigation> Navigations { get; private set; }
+
 
         public CsvColumnBuilder()
         {
             this.Columns = new List<CsvColumn>();
+            this.Navigations = new List<CsvNavigation>();
         }
-        public CsvColumnFactory Add<TProperty>(Expression<Func<T, TProperty>> param)
+        public CsvColumnFactory Add<TProperty>(Expression<Func<T, TProperty>> column)
         {
-            MemberExpression propertyBody = param.Body as MemberExpression;
+            MemberExpression propertyBody = column.Body as MemberExpression;
             CsvColumnFactory builder = new CsvColumnFactory(propertyBody.Member.Name);            
             this.Columns.Add(builder.GetColumn());
             return builder;
         }
 
-        public CsvColumnFactory AddOneToManyNavigation<TProperty>(Expression<Func<T, TProperty>> param)
+        public CsvNavigationFactory AddNavigation<N, TProperty>(Expression<Func<N, TProperty>> column)
         {
-            MemberExpression propertyBody = param.Body as MemberExpression;
-            CsvColumnFactory builder = new CsvColumnFactory(propertyBody.Member.Name);
-            builder.RelationType(CsvRelationTypeEnum.OneToMany);
-            this.Columns.Add(builder.GetColumn());
+            MemberExpression propertyBody = column.Body as MemberExpression;
+            CsvNavigationFactory builder = new CsvNavigationFactory(propertyBody.Member.Name);
+            this.Navigations.Add(builder.GetNavigation());
             return builder;
         }
 
-        public CsvColumnFactory AddOneToOneNavigation<TProperty>(Expression<Func<T, TProperty>> param)
-        {
-            MemberExpression propertyBody = param.Body as MemberExpression;
-            CsvColumnFactory builder = new CsvColumnFactory(propertyBody.Member.Name);
-            builder.RelationType(CsvRelationTypeEnum.OneToMany);
-            this.Columns.Add(builder.GetColumn());
-            return builder;
-        }
-
-        public CsvColumnFactory AddManyToManyNavigation<TProperty>(Expression<Func<T, TProperty>> param)
-        {
-            MemberExpression propertyBody = param.Body as MemberExpression;
-            CsvColumnFactory builder = new CsvColumnFactory(propertyBody.Member.Name);
-            builder.RelationType(CsvRelationTypeEnum.ManyToMany);
-            this.Columns.Add(builder.GetColumn());
-            return builder;
-        }
+      
     }
 }
