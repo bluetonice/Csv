@@ -11,15 +11,26 @@ namespace CsvFramework
 
         public CsvNavigationFactory(string Name)
         {
-            navigation = new CsvNavigation();
+            navigation = new CsvNavigation(Name);
         }
 
-        public CsvNavigationFactory RelationType(CsvRelationTypeEnum value)
+        public CsvNavigationFactory Type(Type type)
         {
-            this.navigation.RelationType = value;
+            this.navigation.Type = type;
             return this;
         }
-        
+
+
+        public CsvNavigationFactory RelationKey<N,TProperty>(Expression<Func<N,TProperty>> key)
+        {
+            MemberExpression keyBody = key.Body as MemberExpression;
+            this.navigation.NavigationName = keyBody.Member.Name;
+            this.navigation.Type = typeof(N);            
+            return this;
+        }
+
+
+
         public CsvNavigation GetNavigation()
         {
             return this.navigation;

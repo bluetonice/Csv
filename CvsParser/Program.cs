@@ -30,14 +30,14 @@ namespace CvsParser
             var activitiesLines = System.IO.File.ReadAllLines(@".\temp\data\Activities.csv");
 
 
-            CsvFactory.Register<Activity>(builder =>
+            CsvFactory.Register2<Activity>(builder =>
             {
                 builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true);
                 builder.Add(a => a.OrderId).Type(typeof(int)).Index(1);
                 builder.Add(a => a.TaskType).Type(typeof(string)).Index(2);            
-            }, true, ',');
+            }, true, ',',activitiesLines);
 
-            CsvFactory.Register<Particiant>(builder =>
+            CsvFactory.Register2<Particiant>(builder =>
             {
                 builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true); 
                 builder.Add(a => a.ProjectId).Type(typeof(int)).Index(1);
@@ -45,48 +45,65 @@ namespace CvsParser
                 builder.Add(a => a.Role).Type(typeof(string)).Index(3);
                 
 
-            }, true, ',');
+            }, true, ',',particiantLines);
 
-            CsvFactory.Register<Order>(builder =>
+            CsvFactory.Register2<Order>(builder =>
             {
                 builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true);
                 builder.Add(a => a.ProjectId).Type(typeof(int)).Index(1);
                 builder.Add(a => a.Keyword).Type(typeof(string)).Index(2);
                 builder.Add(a => a.PendingTask).Type(typeof(string)).Index(3);
-                builder.Add(a => a.State).Type(typeof(string)).Index(4);
-                //builder.AddNavigation<Activity,int>(a => a.OrderId);
+                builder.Add(a => a.State).Type(typeof(string)).Index(4);                
+               // builder.AddNavigation(n => n.Activities).RelationKey<Activity, int>(k => k.OrderId);
 
-            }, true, ',');
+            }, true, ',',orderLines);
 
-            CsvFactory.Register<Project>(builder =>
+            CsvFactory.Register2<Project>(builder =>
            {
                builder.Add(a => a.Id).Type(typeof(int)).Index(0).IsKey(true);
                builder.Add(a => a.Name).Type(typeof(string)).Index(1);
-               builder.AddNavigation<Order,int>(a=>a.ProjectId);
-               //builder.AddNavigation<Particiant,int>(a => a.ProjectId);
+               builder.AddNavigation(n => n.Orders).RelationKey<Order, int>(k => k.ProjectId);
+               //builder.AddNavigation(n => n.Particiants).RelationKey<Particiant, int>(k => k.ProjectId);               
 
-           }, true, ',');
+           }, true, ',',projectLines);
 
+            var projects2 = CsvFactory.Parse2<Project>();
 
-            var projects = CsvFactory.Parse<Project>(projectLines);
-            var activities = CsvFactory.Parse<Activity>(activitiesLines);
-            var orders = CsvFactory.Parse<Order>(orderLines);
-            var particiants = CsvFactory.Parse<Particiant>(particiantLines);
-
-            IEnumerable<ResultModel> results = projects.Select(p => new ResultModel
+            IEnumerable<ResultModel> projects = projects2.Select(p => new ResultModel
             {
                 Id = p.Id,
                 Name = p.Name,
-                number_of_orders = orders.Count(order => order.ProjectId == p.Id),
-                number_of_pending_types = orders.Where(order=>order.ProjectId == p.Id).GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-                number_of_participant_types = particiants.Where(pa => pa.ProjectId == p.Id).GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-                number_of_activity_types = activities.Where(o => orders.Where(order => order.ProjectId == p.Id).Select(a=>a.Id).Contains(o.OrderId)).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                number_of_orders = p.Orders.Count,
+                number_of_pending_types = p.Orders.GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                //number_of_participant_types = p.Particiants.GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                //number_of_activity_types = p.Orders.SelectMany(o => o.Activities).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
 
             });
 
-            string output = JsonConvert.SerializeObject(results,Formatting.Indented);
+            string output = JsonConvert.SerializeObject(projects, Formatting.Indented);
 
             Console.WriteLine(output);
+            Console.ReadLine();
+
+            //var projects = CsvFactory.Parse2<Project>();
+            //var activities = CsvFactory.Parse<Activity>(activitiesLines);
+            //var orders = CsvFactory.Parse<Order>(orderLines);
+            //var particiants = CsvFactory.Parse<Particiant>(particiantLines);
+
+            //IEnumerable<ResultModel> results = projects.Select(p => new ResultModel
+            //{
+            //    Id = p.Id,
+            //    Name = p.Name,
+            //    number_of_orders = orders.Count(order => order.ProjectId == p.Id),
+            //    number_of_pending_types = orders.Where(order=>order.ProjectId == p.Id).GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+            //    number_of_participant_types = particiants.Where(pa => pa.ProjectId == p.Id).GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+            //    number_of_activity_types = activities.Where(o => orders.Where(order => order.ProjectId == p.Id).Select(a=>a.Id).Contains(o.OrderId)).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+
+            //});
+
+            //string output = JsonConvert.SerializeObject(results,Formatting.Indented);
+
+            //Console.WriteLine(output);
             Console.ReadLine();
 
 

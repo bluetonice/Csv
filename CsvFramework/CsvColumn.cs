@@ -9,18 +9,17 @@ namespace CsvFramework
     {
         public CsvColumn(string Name)
         {
-            this.Name = Name;
-            this.RelationType = CsvRelationTypeEnum.None;
+            this.Name = Name;        
         }
 
-        public CsvRelationTypeEnum RelationType { get; set; }
+        
         public string Name { get; set; }
         public Type Type { get; set; }
 
 
         public int Index { get; set; }
 
-        public object IsKey { get; set; }
+        public bool IsKey { get; set; }
 
     }
 }

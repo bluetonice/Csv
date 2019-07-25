@@ -16,11 +16,11 @@ namespace CsvFramework
             column = new CsvColumn(Name);
         }
 
-        public CsvColumnFactory RelationType(CsvRelationTypeEnum value)
-        {
-            this.column.RelationType = value;
-            return this;
-        }
+        //public CsvColumnFactory RelationType(CsvRelationTypeEnum value)
+        //{
+        //    this.column.RelationType = value;
+        //    return this;
+        //}
         public CsvColumnFactory Type(Type type)
         {
             this.column.Type = type;

@@ -6,10 +6,17 @@ namespace CsvFramework
 {
     public class CsvNavigation
     {
-        public CsvRelationTypeEnum RelationType { get; set; }
+        public string Name { get; set; }
 
-        public Type RelatedType { get; set; }
+        public string NavigationName { get; set; }
 
-        public string RelationKey { get; set; }
+        public Type Type { get; set; }
+
+        public CsvNavigation(string Name)
+        {
+            this.Name = Name;
+        }
+
+        
     }
 }

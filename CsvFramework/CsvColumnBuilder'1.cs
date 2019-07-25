@@ -24,10 +24,11 @@ namespace CsvFramework
             return builder;
         }
 
-        public CsvNavigationFactory AddNavigation<N, TProperty>(Expression<Func<N, TProperty>> column)
+        public CsvNavigationFactory AddNavigation<TProperty>(Expression<Func<T, TProperty>> column)
         {
-            MemberExpression propertyBody = column.Body as MemberExpression;
-            CsvNavigationFactory builder = new CsvNavigationFactory(propertyBody.Member.Name);
+            MemberExpression columnBody = column.Body as MemberExpression;
+            
+            CsvNavigationFactory builder = new CsvNavigationFactory(columnBody.Member.Name);            
             this.Navigations.Add(builder.GetNavigation());
             return builder;
         }
