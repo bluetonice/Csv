@@ -4,18 +4,11 @@ using System.Text;
 
 namespace CsvParser.Test
 {
-    public class Order
+    public class Address
     {
         public int Id { get; set; }
-
         public int CustomerId { get; set; }
-        public int Quantity { get; set; }
 
-        public int Amount { get; set; }
-
-        public List<OrderItem> OrderItems { get; set; }
-
-        
-
+        public string Name { get; set; }
     }
 }

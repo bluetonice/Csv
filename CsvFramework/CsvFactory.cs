@@ -9,9 +9,10 @@ namespace CsvFramework
     {
         static CsvModelGenericDictionary csvModels = new CsvModelGenericDictionary();
 
-
+        //TODO:away static
         static List<CsvFilterItem> filters = new List<CsvFilterItem>();
 
+        
 
         public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
         {
