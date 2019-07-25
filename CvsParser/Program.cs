@@ -19,6 +19,8 @@ namespace CvsParser
             
             webClient.DownloadFile(new Uri("https://app.wordapp.com/data.zip"), "csv.zip");
 
+            System.IO.Directory.Delete(@".\temp",true);
+
             ZipFile.ExtractToDirectory(@".\csv.zip", @".\temp");
 
 
