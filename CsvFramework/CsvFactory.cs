@@ -25,6 +25,10 @@ namespace CsvFramework
         public static List<T> Parse<T>() where T : class, new()
         {
 
+
+
+
+
             CsvModel<T>  csvModel = csvModels.GetValue<T>(typeof(T).Name);
 
 

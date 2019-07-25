@@ -43,7 +43,7 @@ namespace CvsParser
                 builder.Add(a => a.Keyword).Type(typeof(string)).Index(2);
                 builder.Add(a => a.PendingTask).Type(typeof(string)).Index(3);
                 builder.Add(a => a.State).Type(typeof(string)).Index(4);
-                builder.AddOneToManyNavigation(a => a.Activities).Type(typeof(Activity));
+                //builder.AddOneToManyNavigation(a => a.Activities).Type(typeof(Activity));
 
             }, true, ',', orderLines);
 
@@ -51,26 +51,29 @@ namespace CvsParser
            {
                builder.Add(a => a.Id).Type(typeof(int)).Index(0);
                builder.Add(a => a.Name).Type(typeof(string)).Index(1);
-               builder.AddOneToManyNavigation(a => a.Orders).Type(typeof(Order));
-               builder.AddOneToManyNavigation(a => a.Particiants).Type(typeof(Particiant));
+               //builder.AddOneToManyNavigation(a => a.Orders).Type(typeof(Order));
+               //builder.AddOneToManyNavigation(a => a.Particiants).Type(typeof(Particiant));
 
            }, true, ',', projectLines);
 
 
-            var projects2 = CsvFactory.Parse<Project>();
+            var projects = CsvFactory.Parse<Project>();
+            var activities = CsvFactory.Parse<Activity>();
+            var orders = CsvFactory.Parse<Order>();
+            var particiants = CsvFactory.Parse<Particiant>();
 
-            IEnumerable<ResultModel> projects = CsvFactory.Parse<Project>().Select(p => new ResultModel
+            IEnumerable<ResultModel> results = projects.Select(p => new ResultModel
             {
                 Id = p.Id,
                 Name = p.Name,
-                number_of_orders = p.Orders.Count(o=>p.Id == p.Id),
-                number_of_pending_types = p.Orders.Where(o=>o.Id == p.Id).GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-                number_of_participant_types = p.Particiants.Where(pa => pa.Id == p.Id).GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-                number_of_activity_types = p.Orders.Where(o => o.Id == p.Id).SelectMany(o=>o.Activities).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                number_of_orders = orders.Count(order => order.ProjectId == p.Id),
+                number_of_pending_types = orders.Where(order=>order.ProjectId == p.Id).GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                number_of_participant_types = particiants.Where(pa => pa.ProjectId == p.Id).GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                number_of_activity_types = activities.Where(o => orders.Where(order => order.ProjectId == p.Id).Select(a=>a.Id).Contains(o.OrderId)).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
 
             });
 
-            string output = JsonConvert.SerializeObject(projects,Formatting.Indented);
+            string output = JsonConvert.SerializeObject(results,Formatting.Indented);
 
             Console.WriteLine(output);
             Console.ReadLine();
