@@ -19,7 +19,7 @@ namespace CvsParser
             {
                 builder.Add(a => a.Id).Type(typeof(int)).Index(0);
                 builder.Add(a => a.OrderId).Type(typeof(int)).Index(1);
-                builder.Add(a => a.TaskType).Type(typeof(int)).Index(2);            
+                builder.Add(a => a.TaskType).Type(typeof(string)).Index(2);            
             }, true, ',', activitiesLines);
 
             CsvFactory.Register<Particiant>(builder =>
@@ -39,7 +39,7 @@ namespace CvsParser
                 builder.Add(a => a.Keyword).Type(typeof(string)).Index(2);
                 builder.Add(a => a.PendingTask).Type(typeof(string)).Index(3);
                 builder.Add(a => a.State).Type(typeof(string)).Index(4);
-                builder.AddManyToNavigation(a => a.Activities).Type(typeof(Activity));
+                builder.AddOneToManyNavigation(a => a.Activities).Type(typeof(Activity));
 
             }, true, ',', orderLines);
 
@@ -47,13 +47,13 @@ namespace CvsParser
            {
                builder.Add(a => a.Id).Type(typeof(int)).Index(0);
                builder.Add(a => a.Name).Type(typeof(string)).Index(1);
-               builder.AddManyToNavigation(a => a.Orders).Type(typeof(Order));
-               builder.AddManyToNavigation(a => a.Particiants).Type(typeof(Particiant));
+               builder.AddOneToManyNavigation(a => a.Orders).Type(typeof(Order));
+               builder.AddOneToManyNavigation(a => a.Particiants).Type(typeof(Particiant));
 
            }, true, ',', projectLines);
 
 
-            var orders = CsvFactory.Parse<Order>();
+            var orders = CsvFactory.Parse<Project>();
 
 
         }

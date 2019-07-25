@@ -21,20 +21,29 @@ namespace CsvFramework
             return parameterBuilder;
         }
 
-        public ParameterFactory AddManyToNavigation<TProperty>(Expression<Func<T, TProperty>> param)
-        {
-            MemberExpression propertyBody = param.Body as MemberExpression;
-            ParameterFactory parameterBuilder = new ParameterFactory(propertyBody.Member.Name);
-            parameterBuilder.RelationType(RelationTypeEnum.ManyToMany);
-            this.Columns.Add(parameterBuilder.GetParameter());
-            return parameterBuilder;
-        }
-
-        public ParameterFactory AddOneToNavigation<TProperty>(Expression<Func<T, TProperty>> param)
+        public ParameterFactory AddOneToManyNavigation<TProperty>(Expression<Func<T, TProperty>> param)
         {
             MemberExpression propertyBody = param.Body as MemberExpression;
             ParameterFactory parameterBuilder = new ParameterFactory(propertyBody.Member.Name);
             parameterBuilder.RelationType(RelationTypeEnum.OneToMany);
+            this.Columns.Add(parameterBuilder.GetParameter());
+            return parameterBuilder;
+        }
+
+        public ParameterFactory AddOneToOneNavigation<TProperty>(Expression<Func<T, TProperty>> param)
+        {
+            MemberExpression propertyBody = param.Body as MemberExpression;
+            ParameterFactory parameterBuilder = new ParameterFactory(propertyBody.Member.Name);
+            parameterBuilder.RelationType(RelationTypeEnum.OneToMany);
+            this.Columns.Add(parameterBuilder.GetParameter());
+            return parameterBuilder;
+        }
+
+        public ParameterFactory AddManyToManyNavigation<TProperty>(Expression<Func<T, TProperty>> param)
+        {
+            MemberExpression propertyBody = param.Body as MemberExpression;
+            ParameterFactory parameterBuilder = new ParameterFactory(propertyBody.Member.Name);
+            parameterBuilder.RelationType(RelationTypeEnum.ManyToMany);
             this.Columns.Add(parameterBuilder.GetParameter());
             return parameterBuilder;
         }

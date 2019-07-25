@@ -9,6 +9,7 @@ namespace CsvFramework
         None,
         OneToMany,
         ManyToMany,
+        OneToOne
 
 }
 }

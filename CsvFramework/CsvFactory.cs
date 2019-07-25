@@ -50,7 +50,11 @@ namespace CsvFramework
                             item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(values[column.Index], column.Type));
                             break;
                         case RelationTypeEnum.OneToMany:
-
+                            var @object = typeof(CsvFactory)
+                                  .GetMethod("Parse")
+                                  .MakeGenericMethod(column.Type)
+                                  .Invoke(null,null);
+                            item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(@object, column.Type));
                             break;
                         case RelationTypeEnum.ManyToMany:
                             break;
