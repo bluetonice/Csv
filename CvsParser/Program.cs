@@ -4,7 +4,9 @@ using CvsParser.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 
 namespace CvsParser
 {
@@ -13,10 +15,17 @@ namespace CvsParser
         static void Main(string[] args)
         {
 
-            var projectLines = System.IO.File.ReadAllLines(@"C:\temp\data\Projects.csv");
-            var orderLines = System.IO.File.ReadAllLines(@"C:\temp\data\Orders.csv");
-            var particiantLines = System.IO.File.ReadAllLines(@"C:\temp\data\Participants.csv");
-            var activitiesLines = System.IO.File.ReadAllLines(@"C:\temp\data\Activities.csv");
+            WebClient webClient = new WebClient();
+            
+            webClient.DownloadFile(new Uri("https://app.wordapp.com/data.zip"), "csv.zip");
+
+            ZipFile.ExtractToDirectory(@".\csv.zip", @".\temp");
+
+
+            var projectLines = System.IO.File.ReadAllLines(@".\temp\data\Projects.csv");
+            var orderLines = System.IO.File.ReadAllLines(@".\temp\data\Orders.csv");
+            var particiantLines = System.IO.File.ReadAllLines(@".\temp\data\Participants.csv");
+            var activitiesLines = System.IO.File.ReadAllLines(@".\temp\data\Activities.csv");
 
 
             CsvFactory.Register<Activity>(builder =>
