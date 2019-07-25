@@ -13,6 +13,7 @@ namespace CsvParser.Test
 
         public int Amount { get; set; }
 
-        
+        public List<OrderItem> OrderItems { get; set; }
+
     }
 }

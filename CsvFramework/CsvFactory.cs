@@ -10,20 +10,7 @@ namespace CsvFramework
         static CsvModelGenericDictionary csvModels = new CsvModelGenericDictionary();
 
 
-        public static void Register2<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator) where T : class, new()
-        {
-            var name = typeof(T).Name;
-
-            if (csvModels.IsExist(name)) csvModels.Remove(name);
-
-            CsvColumnBuilder<T> builder = new CsvColumnBuilder<T>();
-            builderAction(builder);
-            CsvModel<T> csvModel = new CsvModel<T>();
-            csvModel.Builder = builder;
-            csvModel.Seperator = seperator;
-            csvModel.SkipHeader = skipheader;
-            csvModels.Add(name, csvModel);
-        }
+        static List<CsvFilterItem> filters = new List<CsvFilterItem>();
 
 
         public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
@@ -42,39 +29,10 @@ namespace CsvFramework
             csvModels.Add(name, csvModel);
         }
 
-        public static List<T> Parse3<T>(string[] lines) where T : class, new()
-        {
 
 
-            CsvModel<T> csvModel = csvModels.GetValue<T>(typeof(T).Name);
 
-            List<T> list = new List<T>();
-
-            if (csvModel.SkipHeader)
-            {
-                lines = lines.Skip(1).ToArray();
-            }
-
-            foreach (var line in lines)
-            {
-                var values = line.Split(csvModel.Seperator);
-
-                var item = new T();
-
-                foreach (var column in csvModel.Builder.Columns)
-                {
-                    item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(values[column.Index], column.Type));
-                }
-
-                list.Add(item);
-            }
-
-            return list;
-        }
-
-
-        static List<CsvFilterItem> filters = new List<CsvFilterItem>();
-
+        //TODO:Mesaure Performance and 
         public static List<T> Parse<T>() where T : class, new()
         {
 
@@ -138,18 +96,16 @@ namespace CsvFramework
                     }
 
                     var @object = typeof(CsvFactory)
-                          .GetMethod("Parse2")
+                          .GetMethod("Parse")
                           .MakeGenericMethod(navigation.Type)
                           .Invoke(null, null);
+
                     item.GetType().GetProperty(navigation.Name).SetValue(item, @object);
 
                 }
 
                 list.Add(item);
             }
-
-
-
 
             return list;
         }

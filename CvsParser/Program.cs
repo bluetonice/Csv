@@ -67,9 +67,9 @@ namespace CvsParser
 
            }, true, ',',projectLines);
 
-            var projects2 = CsvFactory.Parse<Project>();
+            
 
-            IEnumerable<ResultModel> projects = projects2.Select(p => new ResultModel
+            IEnumerable<ResultModel> projects = CsvFactory.Parse<Project>().Select(p => new ResultModel
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -85,26 +85,7 @@ namespace CvsParser
             Console.WriteLine(output);
             Console.ReadLine();
 
-            //var projects = CsvFactory.Parse2<Project>();
-            //var activities = CsvFactory.Parse<Activity>(activitiesLines);
-            //var orders = CsvFactory.Parse<Order>(orderLines);
-            //var particiants = CsvFactory.Parse<Particiant>(particiantLines);
-
-            //IEnumerable<ResultModel> results = projects.Select(p => new ResultModel
-            //{
-            //    Id = p.Id,
-            //    Name = p.Name,
-            //    number_of_orders = orders.Count(order => order.ProjectId == p.Id),
-            //    number_of_pending_types = orders.Where(order=>order.ProjectId == p.Id).GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-            //    number_of_participant_types = particiants.Where(pa => pa.ProjectId == p.Id).GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-            //    number_of_activity_types = activities.Where(o => orders.Where(order => order.ProjectId == p.Id).Select(a=>a.Id).Contains(o.OrderId)).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
-
-            //});
-
-            //string output = JsonConvert.SerializeObject(results,Formatting.Indented);
-
-            //Console.WriteLine(output);
-            Console.ReadLine();
+           
 
 
 
