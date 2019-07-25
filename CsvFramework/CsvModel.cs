@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CsvFramework
 {
-    public class CsvModel<T>
+    public class CsvModel<T> where T :class
     {
 
         public ParameterBuilder<T> Builder { get; set; }

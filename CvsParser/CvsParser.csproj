@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CsvFramework\CsvFramework.csproj" />
+    <ProjectReference Include="..\CsvFramework\CsvFramework.csproj" />
   </ItemGroup>
 
 </Project>
