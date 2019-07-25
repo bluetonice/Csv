@@ -10,7 +10,7 @@ namespace CsvFramework
         static CsvModelGenericDictionary csvModels = new CsvModelGenericDictionary();
 
 
-        public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator) where T : class, new()
+        public static void Register2<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator) where T : class, new()
         {
             var name = typeof(T).Name;
 
@@ -26,7 +26,7 @@ namespace CsvFramework
         }
 
 
-        public static void Register2<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
+        public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
         {
             var name = typeof(T).Name;
 
@@ -42,7 +42,7 @@ namespace CsvFramework
             csvModels.Add(name, csvModel);
         }
 
-        public static List<T> Parse<T>(string[] lines) where T : class, new()
+        public static List<T> Parse3<T>(string[] lines) where T : class, new()
         {
 
 
@@ -75,7 +75,7 @@ namespace CsvFramework
 
         static List<CsvFilterItem> filters = new List<CsvFilterItem>();
 
-        public static List<T> Parse2<T>() where T : class, new()
+        public static List<T> Parse<T>() where T : class, new()
         {
 
 
