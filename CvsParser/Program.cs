@@ -62,7 +62,7 @@ namespace CvsParser
            {
                builder.Add(a => a.Id).Type(typeof(int)).Index(0);
                builder.Add(a => a.Name).Type(typeof(string)).Index(1);
-               //builder.AddOneToManyNavigation(a => a.Orders).Type(typeof(Order));
+               builder.AddOneToManyNavigation(a => a.Orders).Type(typeof(Order));
                //builder.AddOneToManyNavigation(a => a.Particiants).Type(typeof(Particiant));
 
            }, true, ',');

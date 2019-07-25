@@ -9,55 +9,42 @@ namespace CsvFramework
 {
     public class CsvColumnFactory
     {
-        CsvColumn parameter;
+        CsvColumn column;
 
         public CsvColumnFactory(string Name)
         {
-            parameter = new CsvColumn(Name);
+            column = new CsvColumn(Name);
         }
 
         public CsvColumnFactory RelationType(CsvRelationTypeEnum value)
         {
-            this.parameter.RelationType = value;
+            this.column.RelationType = value;
             return this;
         }
         public CsvColumnFactory Type(Type type)
         {
-            this.parameter.Type = type;
+            this.column.Type = type;
             return this;
         }
 
         public CsvColumnFactory Index(int size)
         {
-            this.parameter.Index = size;
+            this.column.Index = size;
             return this;
         }
 
 
         public CsvColumnFactory Value(object value)
         {
-            this.parameter.Value = value;
+            this.column.Value = value;
             return this;
         }
 
-        public CsvColumnFactory ValueToStringArray(IEnumerable<string> value, string seperator = ",")
+       
+
+        public CsvColumn GetColumn()
         {
-            if (value != null && value.Any())
-            {
-                this.parameter.Value = String.Join(seperator, value.Select(a => String.Format("'{0}'", a)));
-            }
-            else
-            {
-                this.parameter.Value = String.Empty;
-            }
-
-            return this;
-        }
-
-
-        public CsvColumn GetParameter()
-        {
-            return this.parameter;
+            return this.column;
         }
 
     }
