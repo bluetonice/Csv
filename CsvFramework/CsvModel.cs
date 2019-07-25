@@ -8,10 +8,12 @@ namespace CsvFramework
     {
 
         public CsvColumnBuilder<T> Builder { get; set; }
-        public string[] Lines { get; set; }
+        
         public char Seperator { get; set; }
 
         public bool SkipHeader { get; set; }
+
+        
 
 
     }

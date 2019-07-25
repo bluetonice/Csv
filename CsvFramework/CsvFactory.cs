@@ -10,37 +10,35 @@ namespace CsvFramework
         static CsvModelGenericDictionary csvModels = new CsvModelGenericDictionary();
         
 
-        public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
+        public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator) where T : class, new()
         {
+            var name = typeof(T).Name;
+
+            if (csvModels.IsExist(name)) csvModels.Remove(name);
+
             CsvColumnBuilder<T> builder = new CsvColumnBuilder<T>();
             builderAction(builder);
             CsvModel<T> csvModel = new CsvModel<T>();
-            csvModel.Builder = builder;
-            csvModel.Lines = lines;
+            csvModel.Builder = builder;            
             csvModel.Seperator = seperator;
-            csvModel.SkipHeader = skipheader;
-            csvModels.Add(typeof(T).Name, csvModel);
+            csvModel.SkipHeader = skipheader;            
+            csvModels.Add(name, csvModel);
         }
 
-        public static List<T> Parse<T>() where T : class, new()
+        public static List<T> Parse<T>(string[] lines) where T : class, new()
         {
 
 
-
-
-
             CsvModel<T>  csvModel = csvModels.GetValue<T>(typeof(T).Name);
-
-
 
             List <T> list = new List<T>();
 
             if (csvModel.SkipHeader)
             {
-                csvModel.Lines = csvModel.Lines.Skip(1).ToArray();
+                lines = lines.Skip(1).ToArray();
             }
 
-            foreach (var line in csvModel.Lines)
+            foreach (var line in lines)
             {
                 var values = line.Split(csvModel.Seperator);
 
