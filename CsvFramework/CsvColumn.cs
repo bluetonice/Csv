@@ -4,16 +4,16 @@ using System.Text;
 
 namespace CsvFramework
 {
-    public class Parameter
+    public class CsvColumn
 
     {
-        public Parameter(string Name)
+        public CsvColumn(string Name)
         {
             this.Name = Name;
-            this.RelationType = RelationTypeEnum.None;
+            this.RelationType = CsvRelationTypeEnum.None;
         }
 
-        public RelationTypeEnum RelationType { get; set; }
+        public CsvRelationTypeEnum RelationType { get; set; }
         public string Name { get; set; }
         public Type Type { get; set; }
 

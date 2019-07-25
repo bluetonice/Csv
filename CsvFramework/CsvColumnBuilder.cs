@@ -5,27 +5,27 @@ using System.Text;
 
 namespace CsvFramework
 {
-    public class ParameterBuilder
+    public class CsvColumnBuilder
     {
-        public List<Parameter> Parameters { get; private set; }
+        public List<CsvColumn> Parameters { get; private set; }
 
-        public ParameterBuilder()
+        public CsvColumnBuilder()
         {
-            this.Parameters = new List<Parameter>();
+            this.Parameters = new List<CsvColumn>();
         }
-        public ParameterFactory Add(string name)
+        public CsvColumnFactory Add(string name)
         {
 
-            ParameterFactory parameterBuilder = new ParameterFactory(name);
+            CsvColumnFactory parameterBuilder = new CsvColumnFactory(name);
             //parameterBuilder.Direction(ParamDirection.Input);
             this.Parameters.Add(parameterBuilder.GetParameter());
             return parameterBuilder;
         }
 
-        public ParameterFactory Add<T>(string name)
+        public CsvColumnFactory Add<T>(string name)
         {
 
-            ParameterFactory parameterBuilder = new ParameterFactory(name);
+            CsvColumnFactory parameterBuilder = new CsvColumnFactory(name);
             //parameterBuilder.Direction(ParamDirection.Input);
             parameterBuilder.Type(typeof(T));
             this.Parameters.Add(parameterBuilder.GetParameter());

@@ -7,40 +7,40 @@ using System.Threading.Tasks;
 
 namespace CsvFramework
 {
-    public class ParameterFactory
+    public class CsvColumnFactory
     {
-        Parameter parameter;
+        CsvColumn parameter;
 
-        public ParameterFactory(string Name)
+        public CsvColumnFactory(string Name)
         {
-            parameter = new Parameter(Name);
+            parameter = new CsvColumn(Name);
         }
 
-        public ParameterFactory RelationType(RelationTypeEnum value)
+        public CsvColumnFactory RelationType(CsvRelationTypeEnum value)
         {
             this.parameter.RelationType = value;
             return this;
         }
-        public ParameterFactory Type(Type type)
+        public CsvColumnFactory Type(Type type)
         {
             this.parameter.Type = type;
             return this;
         }
 
-        public ParameterFactory Index(int size)
+        public CsvColumnFactory Index(int size)
         {
             this.parameter.Index = size;
             return this;
         }
 
 
-        public ParameterFactory Value(object value)
+        public CsvColumnFactory Value(object value)
         {
             this.parameter.Value = value;
             return this;
         }
 
-        public ParameterFactory ValueToStringArray(IEnumerable<string> value, string seperator = ",")
+        public CsvColumnFactory ValueToStringArray(IEnumerable<string> value, string seperator = ",")
         {
             if (value != null && value.Any())
             {
@@ -55,7 +55,7 @@ namespace CsvFramework
         }
 
 
-        public Parameter GetParameter()
+        public CsvColumn GetParameter()
         {
             return this.parameter;
         }

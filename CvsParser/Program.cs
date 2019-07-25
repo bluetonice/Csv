@@ -1,6 +1,10 @@
 ﻿using CsvFramework;
+using CsvParser.Models;
 using CvsParser.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CvsParser
 {
@@ -53,7 +57,24 @@ namespace CvsParser
            }, true, ',', projectLines);
 
 
-            var orders = CsvFactory.Parse<Project>();
+            var projects2 = CsvFactory.Parse<Project>();
+
+            IEnumerable<ResultModel> projects = CsvFactory.Parse<Project>().Select(p => new ResultModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                number_of_orders = p.Orders.Count(o=>p.Id == p.Id),
+                number_of_pending_types = p.Orders.Where(o=>o.Id == p.Id).GroupBy(gdc => gdc.PendingTask).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                number_of_participant_types = p.Particiants.Where(pa => pa.Id == p.Id).GroupBy(gdc => gdc.Role).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+                number_of_activity_types = p.Orders.Where(o => o.Id == p.Id).SelectMany(o=>o.Activities).GroupBy(gdc => gdc.TaskType).ToDictionary(gdc => gdc.Key, gdc => gdc.Count()),
+
+            });
+
+            string output = JsonConvert.SerializeObject(projects,Formatting.Indented);
+
+            Console.WriteLine(output);
+            Console.ReadLine();
+
 
 
         }

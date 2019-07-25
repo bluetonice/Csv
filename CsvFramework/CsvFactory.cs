@@ -10,9 +10,9 @@ namespace CsvFramework
         static CsvModelGenericDictionary csvModels = new CsvModelGenericDictionary();
         
 
-        public static void Register<T>(Action<ParameterBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
+        public static void Register<T>(Action<CsvColumnBuilder<T>> builderAction, bool skipheader, char seperator, string[] lines) where T : class, new()
         {
-            ParameterBuilder<T> builder = new ParameterBuilder<T>();
+            CsvColumnBuilder<T> builder = new CsvColumnBuilder<T>();
             builderAction(builder);
             CsvModel<T> csvModel = new CsvModel<T>();
             csvModel.Builder = builder;
@@ -46,17 +46,17 @@ namespace CsvFramework
                 {
                     switch (column.RelationType)
                     {
-                        case RelationTypeEnum.None:
+                        case CsvRelationTypeEnum.None:
                             item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(values[column.Index], column.Type));
                             break;
-                        case RelationTypeEnum.OneToMany:
+                        case CsvRelationTypeEnum.OneToMany:
                             var @object = typeof(CsvFactory)
                                   .GetMethod("Parse")
                                   .MakeGenericMethod(column.Type)
                                   .Invoke(null,null);
-                            item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(@object, column.Type));
+                            item.GetType().GetProperty(column.Name).SetValue(item, @object);
                             break;
-                        case RelationTypeEnum.ManyToMany:
+                        case CsvRelationTypeEnum.ManyToMany:
                             break;
                         default:
                             item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(values[column.Index], column.Type));

@@ -7,7 +7,7 @@ namespace CsvFramework
     public class CsvModel<T> where T :class
     {
 
-        public ParameterBuilder<T> Builder { get; set; }
+        public CsvColumnBuilder<T> Builder { get; set; }
         public string[] Lines { get; set; }
         public char Seperator { get; set; }
 

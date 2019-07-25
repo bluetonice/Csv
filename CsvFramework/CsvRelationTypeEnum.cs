@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CsvFramework
 {
-    public enum RelationTypeEnum
+    public enum CsvRelationTypeEnum
     {
         None,
         OneToMany,
