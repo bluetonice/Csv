@@ -12,6 +12,7 @@ namespace CsvFramework
             this.Name = Name;        
         }
 
+
         
         public string Name { get; set; }
         public Type Type { get; set; }

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace CsvFramework
 {
+
+    
     public static class CsvFactory
     {
         static CsvModelGenericDictionary csvModels = new CsvModelGenericDictionary();
@@ -34,7 +36,7 @@ namespace CsvFramework
 
 
         //TODO:Mesaure Performance and 
-        public static List<T> Parse<T>() where T : class, new()
+        public static List<T> Parse<T>(IPasering<T> pasering =null) where T : class, new()
         {
 
 
@@ -61,6 +63,8 @@ namespace CsvFramework
             foreach (var line in csvModel.Lines)
             {
 
+                if(String.IsNullOrWhiteSpace(line)) continue;
+
                 var values = line.Split(csvModel.Seperator);
 
                 if (filters.Any())
@@ -76,6 +80,14 @@ namespace CsvFramework
 
                 foreach (var column in csvModel.Builder.Columns)
                 {
+                    
+                    //var value = values[column.Index].Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+
+                    //if (column.Name == "url") 
+                    //{ 
+                    //    value = value.Remove(value.Length - 1);
+                    //    value = value.Remove(value.Length - 1);
+                    //}
 
                     item.GetType().GetProperty(column.Name).SetValue(item, Convert.ChangeType(values[column.Index], column.Type));
                 }
@@ -104,6 +116,8 @@ namespace CsvFramework
                     item.GetType().GetProperty(navigation.Name).SetValue(item, @object);
 
                 }
+
+                pasering.Parsing(item);
 
                 list.Add(item);
             }

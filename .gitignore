@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs/CsvParser
+/CsvFramework/bin/Debug/netstandard2.0
+/CsvFramework/obj
+/CsvParser.Test/bin/Debug/netcoreapp2.2
+/CsvParser.Test/obj
+/CvsParser/bin/Debug/netcoreapp2.2
+/CvsParser/obj

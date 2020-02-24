@@ -34,6 +34,7 @@ namespace CsvFramework
         }
 
 
+
         public CsvColumnFactory IsKey(bool IsKey)
         {
             this.column.IsKey = IsKey;
